@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareConnect — Connecting People</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { font-family:'Inter',sans-serif; background:#f0ebe0; color:#1c2b1e; overflow-x:hidden; }
+
+/* ════════════════════════
+   NAV
+════════════════════════ */
+.nav {
+  background:#fff;
+  border-bottom:1px solid #e4ddd0;
+  position:sticky; top:0; z-index:200;
+  padding:0 52px; height:72px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.nav-logo {
+  display:flex; align-items:center; gap:8px;
+  cursor:pointer; text-decoration:none;
+}
+.nav-logo-icon {
+  width:64px; height:54px;
+  flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.nav-logo-icon svg { width:64px; height:54px; }
+.nav-logo-name  { font-family:'Inter',sans-serif; font-weight:700; font-size:1.22rem; letter-spacing:-0.01em; line-height:1.15; }
+.nav-logo-sub   { font-size:0.54rem; font-weight:600; letter-spacing:0.13em; text-transform:uppercase; color:#7a9478; margin-top:1px; }
+.nav-links      { display:flex; align-items:center; gap:34px; }
+.nav-links a    { font-size:0.87rem; font-weight:500; color:#3a4a3d; text-decoration:none; transition:color .15s; }
+.nav-links a:hover { color:#2d5a3d; }
+.nav-actions    { display:flex; align-items:center; gap:10px; }
+.btn-free {
+  padding:8px 18px; border-radius:50px;
+  border:none;
+  background: linear-gradient(135deg, #c05c10 0%, #e07830 100%);
+  color:#fff; font-size:0.82rem; font-weight:700;
+  cursor:pointer; font-family:'Inter',sans-serif; transition:all .15s;
+  box-shadow: 0 2px 10px rgba(192,92,16,0.30);
+  letter-spacing:0.01em;
+}
+.btn-free:hover { background: linear-gradient(135deg, #a84e0d 0%, #c96a26 100%); box-shadow:0 4px 16px rgba(192,92,16,0.40); transform:translateY(-1px); }
+.btn-post {
+  padding:9px 20px; border-radius:6px;
+  background:#2d5a3d; border:none; color:#fff;
+  font-size:0.84rem; font-weight:600;
+  cursor:pointer; font-family:'Inter',sans-serif; transition:background .15s;
+}
+.btn-post:hover { background:#3d7a54; }
+
+/* ════════════════════════
+   TICKER
+════════════════════════ */
+.ticker { background:#2d5a3d; padding:9px 0; overflow:hidden; white-space:nowrap; }
+.ticker-track { display:inline-flex; animation:ticker 32s linear infinite; }
+.ticker-item {
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:0.79rem; font-weight:500; color:rgba(255,255,255,0.82); padding:0 24px;
+}
+.ticker-dot { color:rgba(255,255,255,0.28); font-size:0.42rem; }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ════════════════════════
+   HERO — only the 2 boxes
+════════════════════════ */
+.hero {
+  min-height: calc(100vh - 72px - 38px);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:72px 24px 64px;
+  position:relative;
+}
+
+/* Subtle top radial glow */
+.hero::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:280px;
+  background:radial-gradient(ellipse 65% 100% at 50% 0%, rgba(45,90,61,0.07) 0%, transparent 100%);
+  pointer-events:none;
+}
+
+.hero-top {
+  text-align:center; max-width:600px; margin-bottom:48px;
+  position:relative; z-index:1;
+}
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:10px; margin-bottom:26px;
+}
+.eyebrow-line { width:26px; height:2px; background:#2d5a3d; }
+.eyebrow-text {
+  font-size:0.68rem; font-weight:700;
+  letter-spacing:0.17em; text-transform:uppercase; color:#2d5a3d;
+}
+.hero-h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.6rem,5vw,3.8rem);
+  font-weight:900; line-height:1.07; color:#1a2e1d;
+}
+.hero-h1 em { font-style:italic; color:#2d5a3d; display:block; }
+.hero-sub {
+  font-size:0.98rem; color:#5a6b5d; line-height:1.75;
+  margin-top:16px; max-width:440px; margin-left:auto; margin-right:auto;
+}
+
+/* ─ The two cards ─ */
+.hero-cards {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:16px; width:100%; max-width:680px;
+  position:relative; z-index:1;
+}
+
+.hcard {
+  border-radius:10px; padding:28px 26px 24px;
+  cursor:pointer; border:none; text-align:left;
+  font-family:'Inter',sans-serif;
+  transition:transform .22s, box-shadow .22s;
+  position:relative;
+}
+.hcard:hover { transform:translateY(-3px); }
+
+.hcard.dark {
+  background:#2d5a3d; color:#fff;
+  box-shadow:0 4px 24px rgba(45,90,61,0.26);
+}
+.hcard.dark:hover { box-shadow:0 10px 36px rgba(45,90,61,0.34); }
+
+.hcard.light {
+  background:#fff; color:#1c2b1e;
+  border:1.5px solid #ddd6c5;
+  box-shadow:0 2px 12px rgba(28,43,30,0.07);
+}
+.hcard.light:hover { box-shadow:0 8px 28px rgba(28,43,30,0.12); border-color:#b8d4c0; }
+
+/* active state when panel open */
+.hcard.active-card.dark  { box-shadow:0 0 0 3px rgba(255,255,255,0.5), 0 10px 36px rgba(45,90,61,0.34); }
+.hcard.active-card.light { box-shadow:0 0 0 3px #2d5a3d, 0 8px 28px rgba(28,43,30,0.12); }
+
+.hcard-header { display:flex; align-items:center; gap:9px; margin-bottom:10px; }
+.hcard-header svg { width:15px; height:15px; flex-shrink:0; }
+.hcard.dark  .hcard-header svg { color:rgba(255,255,255,0.75); }
+.hcard.light .hcard-header svg { color:#2d5a3d; }
+
+.hcard-title { font-size:0.9rem; font-weight:600; line-height:1.2; }
+.hcard.dark  .hcard-title { color:#fff; }
+.hcard.light .hcard-title { color:#1c2b1e; }
+
+.hcard-badge-free {
+  display:inline-block; margin-bottom:10px;
+  background: rgba(0,0,0,0.07); color:#6a7a6d;
+  font-size:0.62rem; font-weight:600; letter-spacing:0.05em;
+  padding:4px 11px; border-radius:50px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.hcard-badge-plan {
+  display:inline-flex; align-items:center;
+  background: linear-gradient(135deg, #c05c10 0%, #e07830 100%);
+  color:#fff;
+  font-size:0.72rem; font-weight:700;
+  padding:4px 12px; border-radius:50px; margin-bottom:10px;
+  box-shadow: 0 2px 8px rgba(192,92,16,0.40);
+  letter-spacing:0.02em;
+}
+.hcard-body { font-size:0.8rem; line-height:1.55; margin-bottom:16px; }
+.hcard.dark  .hcard-body { color:rgba(255,255,255,0.72); }
+.hcard.light .hcard-body { color:#5a6b5d; }
+
+.hcard-link { font-size:0.81rem; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+.hcard.dark  .hcard-link { color:#fff; }
+.hcard.light .hcard-link { color:#2d5a3d; }
+
+/* ─ Footer note ─ */
+.hero-note {
+  margin-top:26px; z-index:1; position:relative;
+  display:flex; align-items:center; gap:7px;
+  font-size:0.77rem; color:#7a8c7d;
+}
+.hero-note svg { width:12px; height:12px; }
+
+/* ════════════════════════
+   CITY PANEL (slides down below cards)
+════════════════════════ */
+.city-panel {
+  display:none; width:100%; max-width:680px;
+  margin-top:14px; z-index:1; position:relative;
+  animation:slideDown .26s cubic-bezier(.16,1,.3,1) both;
+}
+.city-panel.open { display:block; }
+
+@keyframes slideDown {
+  from { opacity:0; transform:translateY(-12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.cp-inner {
+  background:#fff; border-radius:10px;
+  border:1.5px solid #ddd6c5;
+  box-shadow:0 8px 40px rgba(28,43,30,0.11);
+  overflow:hidden;
+}
+
+/* Panel header */
+.cp-head {
+  padding:16px 20px;
+  border-bottom:1px solid #f0ebe0;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.cp-head-left { display:flex; align-items:center; gap:8px; }
+.cp-head-icon {
+  width:26px; height:26px; border-radius:6px;
+  background:#f0f7f2; color:#2d5a3d;
+  display:flex; align-items:center; justify-content:center;
+}
+.cp-head-icon svg { width:13px; height:13px; }
+.cp-head-title { font-size:0.86rem; font-weight:600; color:#1c2b1e; }
+.cp-close {
+  background:#f5f0e8; border:1px solid #e4ddd0;
+  border-radius:4px; width:26px; height:26px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:0.68rem; color:#8a9a8d; transition:background .15s;
+}
+.cp-close:hover { background:#e8e2d8; }
+
+/* Search row */
+.cp-search {
+  padding:14px 20px; display:flex; gap:10px;
+}
+.cp-input {
+  flex:1; border:1.5px solid #e4ddd0; border-radius:6px;
+  padding:10px 14px; font-size:0.88rem; font-family:'Inter',sans-serif;
+  color:#1c2b1e; outline:none; transition:border .15s; background:#faf8f4;
+}
+.cp-input:focus { border-color:#2d5a3d; background:#fff; }
+.cp-input::placeholder { color:#aaa49a; }
+.cp-btn {
+  background:#2d5a3d; color:#fff; border:none;
+  border-radius:6px; padding:10px 22px;
+  font-size:0.84rem; font-family:'Inter',sans-serif; font-weight:600;
+  cursor:pointer; transition:background .15s; white-space:nowrap;
+}
+.cp-btn:hover { background:#3d7a54; }
+
+/* Results area */
+.cp-results { padding:0 20px 20px; display:none; }
+.cp-results.visible { display:block; }
+
+.res-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 0 11px;
+  border-top:1px solid #f0ebe0;
+}
+.res-title { font-size:0.86rem; font-weight:600; color:#1c2b1e; }
+.res-title em { font-style:normal; color:#2d5a3d; }
+.live-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  background:#f0f7f2; border:1px solid #c8e2d0;
+  border-radius:50px; padding:3px 10px;
+  font-size:0.68rem; font-weight:600; color:#2d5a3d;
+}
+.live-dot {
+  width:6px; height:6px; border-radius:50%; background:#3d9c5a;
+  animation:livepulse 2s ease infinite;
+}
+@keyframes livepulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+
+/* Task rows */
+.task-list { display:flex; flex-direction:column; }
+
+.task-row {
+  padding:13px 0; border-bottom:1px solid #f5f0e8;
+  cursor:pointer; transition:background .12s;
+  border-radius:4px; margin:0 -4px; padding-left:4px; padding-right:4px;
+}
+.task-row:last-child { border-bottom:none; }
+.task-row:hover { background:#faf8f4; }
+
+.task-row-top {
+  display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+  margin-bottom:5px;
+}
+.task-row-name { font-size:0.88rem; font-weight:600; color:#1c2b1e; line-height:1.3; }
+.task-row-price {
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem; font-weight:700; color:#1c2b1e; flex-shrink:0;
+}
+.task-row-bottom {
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.task-row-meta {
+  display:flex; align-items:center; gap:5px;
+  font-size:0.73rem; color:#7a8c7d;
+}
+.task-row-meta svg { width:10px; height:10px; flex-shrink:0; }
+.status-pill {
+  font-size:0.66rem; font-weight:700; padding:3px 10px; border-radius:5px; flex-shrink:0;
+}
+.s-open { background:#2d5a3d; color:#fff; }
+
+/* Empty state */
+.res-empty { padding:28px 0; text-align:center; }
+.res-empty-title { font-size:0.88rem; font-weight:600; color:#3a4a3d; margin-bottom:5px; }
+.res-empty-sub   { font-size:0.78rem; color:#8a9a8d; line-height:1.6; }
+
+/* ════════════════════════
+   SECTIONS BELOW HERO
+════════════════════════ */
+.stats { background:#fff; border-top:1px solid #e8e2d8; padding:36px 52px; }
+.stats-inner {
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr);
+}
+.stat-item { text-align:center; border-right:1px solid #e8e2d8; padding:0 20px; }
+.stat-item:last-child { border-right:none; }
+.stat-num {
+  font-family:'Playfair Display',serif;
+  font-size:2.1rem; font-weight:700; color:#1c2b1e; line-height:1; margin-bottom:5px;
+}
+.stat-label { font-size:0.77rem; color:#7a8c7d; line-height:1.4; }
+
+.how { background:#f0ebe0; padding:72px 52px; }
+.how-inner { max-width:1100px; margin:0 auto; }
+.sec-eyebrow { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.sec-eyebrow-line { width:26px; height:2px; background:#2d5a3d; }
+.sec-eyebrow-text {
+  font-size:0.67rem; font-weight:700;
+  letter-spacing:0.17em; text-transform:uppercase; color:#2d5a3d;
+}
+.sec-h2 {
+  font-family:'Playfair Display',serif;
+  font-size:2.2rem; font-weight:800; color:#1a2e1d; margin-bottom:40px; line-height:1.15;
+}
+.how-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.how-card { background:#fff; border-radius:10px; padding:24px 22px; border:1px solid #e8e2d8; }
+.how-num {
+  font-family:'Playfair Display',serif;
+  font-size:1.75rem; font-weight:900; color:#e8e2d8; margin-bottom:11px; line-height:1;
+}
+.how-card h4 { font-size:0.91rem; font-weight:600; margin-bottom:6px; color:#1c2b1e; }
+.how-card p  { font-size:0.8rem; color:#6a7a6d; line-height:1.65; }
+
+.pricing-section { background:#fff; padding:72px 52px; border-top:1px solid #e8e2d8; }
+.pricing-inner   { max-width:1100px; margin:0 auto; }
+.pricing-sub { font-size:0.88rem; color:#6a7a6d; margin-bottom:40px; line-height:1.65; }
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+
+.plan-card {
+  border-radius:10px; border:1.5px solid #e8e2d8;
+  padding:28px 24px; display:flex; flex-direction:column;
+  position:relative; background:#fff; transition:box-shadow .2s;
+}
+.plan-card:hover { box-shadow:0 6px 28px rgba(28,43,30,0.09); }
+.plan-card.featured { border-color:#2d5a3d; }
+.plan-popular {
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  background:#2d5a3d; color:#fff;
+  font-size:0.62rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+  padding:4px 13px; border-radius:50px; white-space:nowrap;
+}
+.plan-tier {
+  font-size:0.67rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  color:#8a9a8d; margin-bottom:9px;
+}
+.plan-card.featured .plan-tier { margin-top:10px; }
+.plan-price-row { display:flex; align-items:baseline; gap:3px; margin-bottom:2px; }
+.plan-price-num {
+  font-family:'Playfair Display',serif;
+  font-size:2.5rem; font-weight:700; color:#1c2b1e; line-height:1;
+}
+.plan-price-period { font-size:0.8rem; color:#8a9a8d; }
+.plan-fee-tag {
+  display:inline-block; margin:9px 0 16px;
+  background:#f0f7f2; color:#2d5a3d;
+  font-size:0.7rem; font-weight:600;
+  padding:3px 10px; border-radius:4px; border:1px solid #c8e2d0;
+}
+.plan-card.featured .plan-fee-tag { background:#2d5a3d; color:#fff; border-color:#2d5a3d; }
+.plan-divider { border:none; border-top:1px solid #f0ebe0; margin-bottom:16px; }
+.plan-features { list-style:none; display:flex; flex-direction:column; gap:9px; flex:1; }
+.plan-features li { display:flex; align-items:flex-start; gap:8px; font-size:0.81rem; color:#3a4a3d; line-height:1.45; }
+.pf-check {
+  width:15px; height:15px; border-radius:3px; flex-shrink:0; margin-top:1px;
+  background:#f0f7f2; color:#2d5a3d;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.56rem; font-weight:700;
+}
+.plan-card.featured .pf-check { background:#2d5a3d; color:#fff; }
+.plan-btn {
+  margin-top:20px; padding:11px; border-radius:6px; border:none;
+  cursor:pointer; font-size:0.83rem; font-weight:600;
+  font-family:'Inter',sans-serif; transition:all .15s; width:100%;
+}
+.plan-btn.outline { background:transparent; border:1.5px solid #ddd6c5; color:#3a4a3d; }
+.plan-btn.outline:hover { border-color:#2d5a3d; color:#2d5a3d; }
+.plan-btn.filled  { background:#2d5a3d; color:#fff; }
+.plan-btn.filled:hover  { background:#3d7a54; }
+
+/* ════════════════════════
+   TRUST SECTION
+════════════════════════ */
+.trust-section {
+  background:#f5f0e8; padding:80px 52px;
+  border-top:1px solid #e8e2d8;
+}
+.trust-inner { max-width:1100px; margin:0 auto; }
+.trust-center { text-align:center; margin-bottom:52px; }
+.trust-eyebrow {
+  display:inline-flex; align-items:center; gap:14px; margin-bottom:18px;
+}
+.trust-eyebrow-line { width:36px; height:1px; background:#2d5a3d; }
+.trust-eyebrow-text {
+  font-size:0.67rem; font-weight:700;
+  letter-spacing:0.18em; text-transform:uppercase; color:#2d5a3d;
+}
+.trust-h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,2.8rem); font-weight:800; color:#1a2e1d;
+  margin-bottom:14px; line-height:1.12;
+}
+.trust-sub { font-size:0.95rem; color:#6a7a6d; line-height:1.7; max-width:500px; margin:0 auto; }
+.trust-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.trust-card {
+  background:#fff; border-radius:12px;
+  border:1px solid #e4ddd0;
+  padding:28px 26px; text-align:center;
+  transition:box-shadow .2s;
+}
+.trust-card:hover { box-shadow:0 6px 24px rgba(28,43,30,0.09); }
+.trust-card-icon {
+  width:48px; height:48px; border-radius:12px;
+  background:#f0f7f2;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 18px;
+}
+.trust-card-icon svg { width:22px; height:22px; color:#2d5a3d; }
+.trust-card h4 { font-size:1rem; font-weight:700; color:#1c2b1e; margin-bottom:10px; }
+.trust-card p  { font-size:0.83rem; color:#6a7a6d; line-height:1.65; }
+
+/* ════════════════════════
+   TESTIMONIALS
+════════════════════════ */
+.testimonials {
+  background:#fff; padding:80px 52px;
+  border-top:1px solid #e8e2d8;
+}
+.testimonials-inner { max-width:1100px; margin:0 auto; }
+.test-center { text-align:center; margin-bottom:52px; }
+.test-eyebrow {
+  display:inline-flex; align-items:center; gap:14px; margin-bottom:18px;
+}
+.test-eyebrow-line { width:36px; height:1px; background:#2d5a3d; }
+.test-eyebrow-text {
+  font-size:0.67rem; font-weight:700;
+  letter-spacing:0.18em; text-transform:uppercase; color:#2d5a3d;
+}
+.test-h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,2.8rem); font-weight:800; color:#1a2e1d; line-height:1.12;
+}
+.test-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.test-card {
+  background:#fff; border-radius:12px;
+  border:1px solid #e4ddd0;
+  padding:28px 26px;
+  display:flex; flex-direction:column;
+  transition:box-shadow .2s;
+}
+.test-card:hover { box-shadow:0 6px 24px rgba(28,43,30,0.09); }
+.test-stars { color:#c9893a; font-size:1rem; letter-spacing:2px; margin-bottom:16px; }
+.test-quote {
+  font-size:0.88rem; color:#3a4a3d; line-height:1.7;
+  font-style:italic; flex:1; margin-bottom:22px;
+}
+.test-author { display:flex; align-items:center; gap:12px; }
+.test-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:#2d5a3d; color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.82rem; font-weight:700; flex-shrink:0;
+}
+.test-name  { font-size:0.85rem; font-weight:600; color:#1c2b1e; }
+.test-role  { font-size:0.74rem; color:#8a9a8d; }
+
+/* ════════════════════════
+   CTA BANNER
+════════════════════════ */
+.cta-banner {
+  background:#f0ebe0; padding:72px 52px;
+  border-top:1px solid #e8e2d8;
+}
+.cta-banner-inner {
+  max-width:1100px; margin:0 auto;
+  display:flex; align-items:center; gap:60px;
+}
+.cta-banner-logo {
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  flex-shrink:0;
+}
+.cta-banner-logo-icon {
+  width:90px; height:76px;
+  display:flex; align-items:center; justify-content:center;
+}
+.cta-banner-logo-icon svg { width:90px; height:76px; }
+.cta-banner-logo-name {
+  font-family:'Playfair Display',serif;
+  font-size:1rem; font-weight:700; color:#1c2b1e;
+}
+.cta-banner-text { flex:1; }
+.cta-banner-text h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,3.5vw,2.5rem); font-weight:800;
+  color:#1a2e1d; margin-bottom:10px; line-height:1.15;
+}
+.cta-banner-text p { font-size:0.92rem; color:#6a7a6d; line-height:1.7; max-width:420px; }
+.cta-banner-actions { display:flex; gap:12px; flex-shrink:0; flex-wrap:wrap; }
+.cta-banner-btn-primary {
+  padding:13px 26px; border-radius:6px;
+  background:#2d5a3d; color:#fff; border:none;
+  font-size:0.88rem; font-weight:600; font-family:'Inter',sans-serif;
+  cursor:pointer; transition:all .15s; white-space:nowrap;
+}
+.cta-banner-btn-primary:hover { background:#3d7a54; transform:translateY(-1px); }
+.cta-banner-btn-secondary {
+  padding:13px 26px; border-radius:6px;
+  background:transparent; color:#1c2b1e;
+  border:1.5px solid #c8bfb0;
+  font-size:0.88rem; font-weight:600; font-family:'Inter',sans-serif;
+  cursor:pointer; transition:all .15s; white-space:nowrap;
+}
+.cta-banner-btn-secondary:hover { border-color:#2d5a3d; color:#2d5a3d; }
+
+footer {
+  background:#1a2e1d; color:rgba(255,255,255,0.62);
+  padding:34px 52px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.footer-logo { font-weight:700; font-size:1rem; color:#fff; }
+.footer-note { font-size:0.76rem; }
+.footer-links { display:flex; gap:22px; }
+.footer-links a { font-size:0.76rem; color:rgba(255,255,255,0.5); text-decoration:none; }
+.footer-links a:hover { color:#fff; }
+
+/* ════════════════════════
+   MODALS
+════════════════════════ */
+.overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(28,43,30,0.5); backdrop-filter:blur(4px);
+  display:none; align-items:center; justify-content:center; padding:24px;
+}
+.overlay.open { display:flex; }
+.modal {
+  background:#fff; border-radius:12px;
+  max-width:460px; width:100%; padding:34px; position:relative;
+  animation:mIn .22s ease both; max-height:90vh; overflow-y:auto;
+}
+@keyframes mIn { from{opacity:0;transform:scale(0.96) translateY(8px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal-x {
+  position:absolute; top:13px; right:13px;
+  background:#f5f0e8; border:1px solid #e4ddd0;
+  border-radius:4px; width:27px; height:27px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.7rem; color:#8a9a8d; transition:background .15s;
+}
+.modal-x:hover { background:#e8e2d8; }
+.mstep { display:none; }
+.mstep.active { display:block; }
+.modal h3 { font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:5px; }
+.msub { font-size:0.81rem; color:#6a7a6d; line-height:1.65; margin-bottom:20px; }
+.ff { margin-bottom:13px; }
+.ff label { display:block; font-size:0.75rem; font-weight:500; margin-bottom:5px; color:#3a4a3d; }
+.ff input, .ff textarea, .ff select {
+  width:100%; border:1.5px solid #e4ddd0; border-radius:6px;
+  padding:10px 12px; font-size:0.86rem; font-family:'Inter',sans-serif;
+  color:#1c2b1e; outline:none; transition:border .15s; background:#fff; resize:none;
+}
+.ff input:focus,.ff textarea:focus,.ff select:focus { border-color:#2d5a3d; }
+.ff textarea { min-height:84px; }
+.row2 { display:flex; gap:11px; }
+.row2 .ff { flex:1; }
+.fee-notice {
+  background:#f0f7f2; border:1px solid #c8e2d0; border-radius:6px;
+  padding:11px 13px; margin-bottom:13px;
+  font-size:0.77rem; color:#3a4a3d; line-height:1.55;
+}
+.fee-notice strong { color:#2d5a3d; }
+.fee-notice a { color:#2d5a3d; text-decoration:underline; cursor:pointer; }
+.mbtn {
+  width:100%; padding:12px; border-radius:6px; border:none;
+  font-family:'Inter',sans-serif; font-size:0.85rem; font-weight:600;
+  cursor:pointer; transition:all .15s; margin-top:5px;
+}
+.mbtn.g { background:#2d5a3d; color:#fff; }
+.mbtn.g:hover { background:#3d7a54; }
+.mbtn.r { background:#faeaea; color:#8b2020; margin-top:8px; }
+.mbtn.r:hover { background:#f5d5d5; }
+.task-preview { background:#f5f0e8; border-radius:8px; padding:14px; margin-bottom:15px; }
+.tp-cat   { font-size:0.64rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#2d5a3d; margin-bottom:3px; }
+.tp-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; margin-bottom:5px; }
+.tp-price { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:#2d5a3d; }
+.tp-fee   { font-size:0.69rem; color:#8a9a8d; margin-top:3px; }
+.tp-meta  { font-size:0.72rem; color:#8a9a8d; margin-top:6px; display:flex; gap:9px; flex-wrap:wrap; }
+.success-wrap { text-align:center; }
+.s-icon {
+  width:52px; height:52px; border-radius:50%;
+  background:#f0f7f2; color:#2d5a3d;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; margin:0 auto 13px;
+}
+.success-wrap h3 { font-size:1.28rem; margin-bottom:7px; }
+.success-wrap p  { font-size:0.81rem; color:#6a7a6d; line-height:1.7; }
+
+/* ── Responsive ── */
+@media(max-width:820px){
+  .nav { padding:0 20px; }
+  .nav-links { display:none; }
+  .hero-cards,.city-panel { max-width:100%; }
+  .hero-cards { grid-template-columns:1fr; }
+  .how-grid,.pricing-grid,.trust-cards,.test-grid { grid-template-columns:1fr; }
+  .stats-inner { grid-template-columns:1fr 1fr; }
+  .how,.pricing-section,.stats,.trust-section,.testimonials,.cta-banner { padding-left:20px; padding-right:20px; }
+  .cta-banner-inner { flex-direction:column; gap:28px; }
+  .cta-banner-logo { flex-direction:row; }
+  .row2 { flex-direction:column; gap:0; }
+  .modal { padding:24px 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Left figure head (sage green) -->
+        <circle cx="34" cy="12" r="9" fill="#7a9478"/>
+        <!-- Right figure head (navy) -->
+        <circle cx="86" cy="12" r="9" fill="#2c3e5a"/>
+
+        <!-- Left body/arm — sweeping curve forming left half of heart -->
+        <path d="M34 21 C34 21 14 32 18 58 C20 70 38 76 60 80" stroke="#7a9478" stroke-width="14" stroke-linecap="round" fill="none"/>
+        <!-- Right body/arm — sweeping curve forming right half of heart -->
+        <path d="M86 21 C86 21 106 32 102 58 C100 70 82 76 60 80" stroke="#2c3e5a" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+        <!-- Handshake in center -->
+        <!-- Left hand (green) -->
+        <path d="M46 56 C50 52 55 54 58 57 L62 61" stroke="#7a9478" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M46 56 C44 54 43 51 45 49 C47 47 50 48 52 50" stroke="#7a9478" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M52 50 C54 48 57 49 58 51" stroke="#7a9478" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <!-- Right hand (navy) -->
+        <path d="M74 56 C70 52 65 54 62 57 L58 61" stroke="#2c3e5a" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M74 56 C76 54 77 51 75 49 C73 47 70 48 68 50" stroke="#2c3e5a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <path d="M68 50 C66 48 63 49 62 51" stroke="#2c3e5a" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <!-- Grip fingers meeting -->
+        <path d="M58 57 C59 55 61 55 62 57" stroke="#7a9478" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+        <!-- House outline (sage green, above center) -->
+        <g transform="translate(49, 18)">
+          <!-- Roof -->
+          <polyline points="11,0 0,9 22,9" stroke="#7a9478" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <!-- Walls -->
+          <rect x="2" y="9" width="18" height="13" stroke="#7a9478" stroke-width="2" fill="none"/>
+          <!-- Door -->
+          <rect x="8" y="15" width="6" height="7" stroke="#7a9478" stroke-width="1.5" fill="none"/>
+          <!-- Window -->
+          <rect x="4" y="11" width="4" height="4" stroke="#7a9478" stroke-width="1.2" fill="none"/>
+          <line x1="6" y1="11" x2="6" y2="15" stroke="#7a9478" stroke-width="1" />
+          <line x1="4" y1="13" x2="8" y2="13" stroke="#7a9478" stroke-width="1" />
+          <!-- Ground arc -->
+          <path d="M-2 22 Q11 26 24 22" stroke="#7a9478" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-logo-name"><span style="color:#7a9478;">care</span><span style="color:#2c3e5a;">connect</span></div>
+      <div class="nav-logo-sub">Connecting People. Supporting Communities.</div>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#" onclick="openModal('helperModal');return false;">For Helpers</a>
+    <a href="#">Areas</a>
+    <a href="#pricing">Pricing</a>
+  </nav>
+
+  <div class="nav-actions">
+    <button class="btn-free" onclick="openModal('postModal')">1 month FREE</button>
+    <button class="btn-post" onclick="openModal('postModal')">Post a Task</button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+  <div class="hero-top">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Neighbourhood help done right</span>
+    </div>
+    <h1 class="hero-h1">
+      Your neighbour can help you
+      <em>right now.</em>
+    </h1>
+    <p class="hero-sub">
+      Post any small errand — groceries, pharmacy, parcels —
+      and a verified neighbour picks it up within the hour.
+    </p>
+  </div>
+
+  <!-- ── THE TWO CARDS ── -->
+  <div class="hero-cards">
+
+    <!-- I need help -->
+    <button class="hcard dark" id="card-need" onclick="openPanel('need')">
+      <div class="hcard-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span class="hcard-title">I need help</span>
+      </div>
+      <div class="hcard-badge-plan">1 month FREE</div>
+      <div class="hcard-body">Post a task and let a verified neighbour take care of it today.</div>
+      <span class="hcard-link">Get started free</span>
+    </button>
+
+    <!-- I want to help -->
+    <button class="hcard light" id="card-help" onclick="openPanel('help')">
+      <div class="hcard-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="hcard-title">I want to help &amp; earn money</span>
+      </div>
+      <div class="hcard-badge-free">ALWAYS FREE for helpers</div>
+      <div class="hcard-body">Accept tasks nearby, earn flexible income, build real community connections.</div>
+      <span class="hcard-link">Sign up free →</span>
+    </button>
+
+  </div>
+
+  <!-- ── CITY PANEL (hidden until card click) ── -->
+  <div class="city-panel" id="cityPanel">
+    <div class="cp-inner">
+
+      <div class="cp-head">
+        <div class="cp-head-left">
+          <div class="cp-head-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <span class="cp-head-title" id="panelTitle">Where are you?</span>
+        </div>
+        <button class="cp-close" onclick="closePanel()">✕</button>
+      </div>
+
+      <div class="cp-search">
+        <input
+          class="cp-input" id="cityInput" type="text"
+          placeholder="Enter your city — e.g. Munich, Frankfurt, Vienna…"
+          onkeydown="if(event.key==='Enter') doSearch()"
+        />
+        <button class="cp-btn" onclick="doSearch()">Search</button>
+      </div>
+
+      <!-- Results — hidden until search -->
+      <div class="cp-results" id="cpResults">
+        <div class="res-header">
+          <span class="res-title" id="resTitle"></span>
+          <span class="live-badge"><span class="live-dot"></span> Live</span>
+        </div>
+        <div class="task-list" id="taskList"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="hero-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    <strong>No commitment.</strong>&nbsp; Cancel anytime.
+  </div>
+
+</div><!-- /hero -->
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">4.9<span style="font-size:1.2rem;color:#2d5a3d;">★</span></div>
+      <div class="stat-label">Average rating<br>from task owners</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Suburb towns<br>covered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">150+</div>
+      <div class="stat-label">Tasks completed<br>this month</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Verified helpers<br>in your area</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="sec-eyebrow">
+      <div class="sec-eyebrow-line"></div>
+      <span class="sec-eyebrow-text">How it works</span>
+    </div>
+    <h2 class="sec-h2">Simple, fast &amp; local</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h4>Post your task</h4>
+        <p>Describe what you need, set a price, and choose your area. Takes under 2 minutes.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h4>A neighbour accepts</h4>
+        <p>Verified helpers nearby see your task and accept it. You get notified immediately.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h4>Done &amp; paid</h4>
+        <p>Once complete, payment releases to your helper. Rate the experience and you're done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="sec-eyebrow">
+      <div class="sec-eyebrow-line"></div>
+      <span class="sec-eyebrow-text">Pricing</span>
+    </div>
+    <h2 class="sec-h2">Simple, honest pricing</h2>
+    <p class="pricing-sub">Start free and upgrade only when it makes sense. No hidden fees, no commitment required.</p>
+    <div class="pricing-grid">
+
+      <div class="plan-card">
+        <div class="plan-tier">Free</div>
+        <div class="plan-price-row">
+          <span class="plan-price-num">€0</span>
+          <span class="plan-price-period">/ month</span>
+        </div>
+        <span class="plan-fee-tag">10% service fee per task</span>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="pf-check">✓</span>Post unlimited tasks</li>
+          <li><span class="pf-check">✓</span>Browse helpers in your area</li>
+          <li><span class="pf-check">✓</span>10% fee charged at checkout</li>
+          <li><span class="pf-check">✓</span>No commitment needed</li>
+        </ul>
+        <button class="plan-btn outline" onclick="openModal('postModal')">Get started free</button>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-popular">Most popular</div>
+        <div class="plan-tier">Pro</div>
+        <div class="plan-price-row">
+          <span class="plan-price-num">€6.99</span>
+          <span class="plan-price-period">/ month</span>
+        </div>
+        <span class="plan-fee-tag">Only 5% service fee</span>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="pf-check">✓</span>Everything in Free</li>
+          <li><span class="pf-check">✓</span>Reduced 5% service fee</li>
+          <li><span class="pf-check">✓</span>Priority task visibility</li>
+          <li><span class="pf-check">✓</span>Advanced task categories</li>
+          <li><span class="pf-check">✓</span>Cancel anytime</li>
+        </ul>
+        <button class="plan-btn filled">Upgrade to Pro</button>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-tier">Premium</div>
+        <div class="plan-price-row">
+          <span class="plan-price-num">€8.99</span>
+          <span class="plan-price-period">/ month</span>
+        </div>
+        <span class="plan-fee-tag">0% service fee — keep it all</span>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="pf-check">✓</span>Everything in Pro</li>
+          <li><span class="pf-check">✓</span>Zero service fees — ever</li>
+          <li><span class="pf-check">✓</span>Dedicated customer support</li>
+          <li><span class="pf-check">✓</span>Highest priority ranking</li>
+          <li><span class="pf-check">✓</span>Early access to new features</li>
+        </ul>
+        <button class="plan-btn outline">Get Premium</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRUST SECTION -->
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="trust-center">
+      <div class="trust-eyebrow">
+        <div class="trust-eyebrow-line"></div>
+        <span class="trust-eyebrow-text">Built on trust</span>
+        <div class="trust-eyebrow-line"></div>
+      </div>
+      <h2 class="trust-h2">Neighbourly. Secure. Reliable.</h2>
+      <p class="trust-sub">Neighbours helping neighbours works best when everyone feels safe. Here's how we make sure of it.</p>
+    </div>
+    <div class="trust-cards">
+
+      <div class="trust-card">
+        <div class="trust-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h4>Verified Helpers</h4>
+        <p>Every helper is ID-verified and community-rated. Read their reviews and see past tasks before anyone handles your errand. You're always in control.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h4>Protected Payments</h4>
+        <p>Your money is held in escrow and only released once you confirm the task is done. Helpers only get paid when you're happy. No cash, no risk, no stress.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h4>Your Neighbourhood Only</h4>
+        <p>Tasks are visible only to people in your area. This isn't an anonymous platform — it's your actual neighbour, someone who lives around the corner.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="test-center">
+      <div class="test-eyebrow">
+        <div class="test-eyebrow-line"></div>
+        <span class="test-eyebrow-text">Real neighbours</span>
+        <div class="test-eyebrow-line"></div>
+      </div>
+      <h2 class="test-h2">What people are saying.</h2>
+    </div>
+    <div class="test-grid">
+
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"I was ill and couldn't leave the house. Within 40 minutes my prescription was at my door. I genuinely couldn't believe it."</p>
+        <div class="test-author">
+          <div class="test-avatar">S</div>
+          <div>
+            <div class="test-name">Sandra K.</div>
+            <div class="test-role">Customer · Hofheim am Taunus</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"I do 3–4 tasks a week between lectures. The extra income adds up and I get to meet people in my neighbourhood I'd never have spoken to otherwise."</p>
+        <div class="test-author">
+          <div class="test-avatar">L</div>
+          <div>
+            <div class="test-name">Lukas M.</div>
+            <div class="test-role">Helper · Bad Soden</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"Both working full time, we used to spend weekends running errands. CareConnect gave us those hours back. Our helper feels like part of the family."</p>
+        <div class="test-author">
+          <div class="test-avatar">A</div>
+          <div>
+            <div class="test-name">Anna &amp; Tom B.</div>
+            <div class="test-role">Customers · Kelkheim</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="cta-banner-inner">
+    <div class="cta-banner-logo">
+      <div class="cta-banner-logo-icon">
+        <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="34" cy="12" r="9" fill="rgba(255,255,255,0.75)"/>
+          <circle cx="86" cy="12" r="9" fill="#fff"/>
+          <path d="M34 21 C34 21 14 32 18 58 C20 70 38 76 60 80" stroke="rgba(255,255,255,0.75)" stroke-width="14" stroke-linecap="round" fill="none"/>
+          <path d="M86 21 C86 21 106 32 102 58 C100 70 82 76 60 80" stroke="#fff" stroke-width="14" stroke-linecap="round" fill="none"/>
+          <path d="M46 56 C50 52 55 54 58 57 L62 61" stroke="rgba(255,255,255,0.75)" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M74 56 C70 52 65 54 62 57 L58 61" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <g transform="translate(49, 18)">
+            <polyline points="11,0 0,9 22,9" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linejoin="round" fill="none"/>
+            <rect x="2" y="9" width="18" height="13" stroke="rgba(255,255,255,0.8)" stroke-width="2" fill="none"/>
+            <rect x="8" y="15" width="6" height="7" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" fill="none"/>
+            <rect x="4" y="11" width="4" height="4" stroke="rgba(255,255,255,0.8)" stroke-width="1.2" fill="none"/>
+            <line x1="6" y1="11" x2="6" y2="15" stroke="rgba(255,255,255,0.6)" stroke-width="1" />
+            <line x1="4" y1="13" x2="8" y2="13" stroke="rgba(255,255,255,0.6)" stroke-width="1" />
+          </g>
+        </svg>
+      </div>
+      <div class="cta-banner-logo-name"><span style="color:#a8c4a8;">care</span><span style="color:#fff;">connect</span></div>
+    </div>
+    <div class="cta-banner-text">
+      <h2>Join your neighbourhood today.</h2>
+      <p>Get everyday tasks handled — or start earning by helping those around you. Your first month is completely free.</p>
+    </div>
+    <div class="cta-banner-actions">
+      <button class="cta-banner-btn-primary" onclick="openModal('postModal')">Try Free for 1 Month →</button>
+      <button class="cta-banner-btn-secondary" onclick="openModal('helperModal')">Sign up as a helper</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CareConnect</div>
+  <div class="footer-note">© 2025 CareConnect. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<!-- ════════ MODALS ════════ -->
+
+<!-- Post a task -->
+<div class="overlay" id="postModal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('postModal')">✕</button>
+    <h3>Post a task</h3>
+    <p class="msub">Your task goes live instantly and is visible to verified helpers in your area.</p>
+    <div class="ff">
+      <label>City / Area</label>
+      <select id="pCity">
+        <option value="">Select your area…</option>
+        <option>Hofheim am Taunus</option><option>Bad Soden am Taunus</option>
+        <option>Kelkheim</option><option>Schwalbach</option><option>Kriftel</option>
+        <option>Hanau</option><option>Maintal</option><option>Gelnhausen</option>
+        <option>Bad Homburg</option><option>Oberursel</option>
+        <option>Munich</option><option>Berlin</option><option>Hamburg</option>
+        <option>Vienna</option><option>Zurich</option><option>Frankfurt</option>
+        <option>Stuttgart</option><option>Cologne</option><option>Düsseldorf</option>
+      </select>
+    </div>
+    <div class="ff"><label>Task Title</label><input type="text" id="pTitle" placeholder="e.g. Pick up prescription from pharmacy" /></div>
+    <div class="ff"><label>Description</label><textarea id="pDesc" placeholder="Describe the task — what, where, when, any details…"></textarea></div>
+    <div class="ff">
+      <label>Category</label>
+      <select id="pCat">
+        <option>Grocery & Errands</option><option>Pharmacy & Health</option>
+        <option>Parcel & Post</option><option>Moving & Transport</option>
+        <option>Cleaning & Tidying</option><option>Gardening</option>
+        <option>Tech Help</option><option>Pet Care</option><option>Other</option>
+      </select>
+    </div>
+    <div class="row2">
+      <div class="ff"><label>Your Offer (€)</label><input type="number" id="pPrice" placeholder="e.g. 10" min="1" /></div>
+      <div class="ff">
+        <label>Timing</label>
+        <select id="pDur">
+          <option>Today</option><option>Today before 5 pm</option>
+          <option>Flexible timing</option><option>This week</option>
+          <option>Under 1 hour</option><option>1–2 hours</option>
+        </select>
+      </div>
+    </div>
+    <div class="fee-notice">
+      Posting is <strong>free</strong>. A <strong>10% service fee</strong> is only charged when the task is completed.
+      <a onclick="closeModal('postModal');document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">View plans for lower fees →</a>
+    </div>
+    <button class="mbtn g" onclick="submitTask()">Publish task</button>
+  </div>
+</div>
+
+<!-- Helper sign up -->
+<div class="overlay" id="helperModal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('helperModal');resetModal('helperModal')">✕</button>
+    <div class="mstep active" id="h-reg">
+      <h3>Sign up as a helper</h3>
+      <p class="msub">Completely free. Register once to browse tasks and start earning in your neighbourhood.</p>
+      <div class="ff"><label>First Name</label><input type="text" placeholder="Anna" /></div>
+      <div class="ff"><label>Last Name</label><input type="text" placeholder="Müller" /></div>
+      <div class="ff"><label>Email</label><input type="email" placeholder="anna@example.com" /></div>
+      <div class="ff">
+        <label>Your Area</label>
+        <select>
+          <option>Hofheim am Taunus</option><option>Bad Soden am Taunus</option>
+          <option>Kelkheim</option><option>Bad Homburg</option>
+          <option>Munich</option><option>Berlin</option><option>Frankfurt</option>
+        </select>
+      </div>
+      <button class="mbtn g" onclick="goStep('helperModal','h-success')">Create free account →</button>
+    </div>
+    <div class="mstep" id="h-success">
+      <div class="success-wrap">
+        <div class="s-icon">✓</div>
+        <h3>You're registered!</h3>
+        <p>Welcome to CareConnect. You can now browse open tasks in your area. Check your email for next steps.</p>
+        <button class="mbtn g" style="margin-top:20px;" onclick="closeModal('helperModal');resetModal('helperModal')">Start browsing tasks</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Task detail (register → detail → success) -->
+<div class="overlay" id="taskModal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('taskModal');resetModal('taskModal')">✕</button>
+    <div class="mstep active" id="t-reg">
+      <h3>Create your account</h3>
+      <p class="msub">Free to register — view full task details and accept tasks near you.</p>
+      <div class="ff"><label>First Name</label><input type="text" placeholder="Anna" /></div>
+      <div class="ff"><label>Last Name</label><input type="text" placeholder="Müller" /></div>
+      <div class="ff"><label>Email</label><input type="email" placeholder="anna@example.com" /></div>
+      <button class="mbtn g" onclick="goStep('taskModal','t-detail')">Create account &amp; see task →</button>
+    </div>
+    <div class="mstep" id="t-detail">
+      <h3>Task details</h3>
+      <p class="msub">Read carefully before accepting. The task owner will be notified immediately.</p>
+      <div class="task-preview">
+        <div class="tp-cat"   id="td-cat"></div>
+        <div class="tp-title" id="td-title"></div>
+        <div class="tp-price" id="td-price"></div>
+        <div class="tp-fee"   id="td-fee"></div>
+        <div class="tp-meta">
+          <span id="td-city"></span>
+          <span id="td-dur"></span>
+        </div>
+      </div>
+      <p style="font-size:0.81rem;color:#6a7a6d;line-height:1.7;margin-bottom:15px;" id="td-desc"></p>
+      <button class="mbtn g" onclick="goStep('taskModal','t-success')">Accept task</button>
+      <button class="mbtn r" onclick="closeModal('taskModal');resetModal('taskModal')">Decline</button>
+    </div>
+    <div class="mstep" id="t-success">
+      <div class="success-wrap">
+        <div class="s-icon">✓</div>
+        <h3>Task accepted!</h3>
+        <p>The task owner has been notified and will reach out by email. Payment releases once the task is marked complete.</p>
+        <button class="mbtn g" style="margin-top:20px;" onclick="closeModal('taskModal');resetModal('taskModal')">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Post success -->
+<div class="overlay" id="successModal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('successModal')">✕</button>
+    <div class="success-wrap">
+      <div class="s-icon">✓</div>
+      <h3>Task published!</h3>
+      <p>Your task is now live and visible to helpers in your area. You'll be notified as soon as someone accepts it.</p>
+      <button class="mbtn g" style="margin-top:20px;" onclick="closeModal('successModal')">Back to home</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Storage ── */
+const SK = 'careconnect_v4';
+function getTasks(){ try{ return JSON.parse(localStorage.getItem(SK))||[]; }catch{ return []; } }
+function saveTasks(t){ localStorage.setItem(SK, JSON.stringify(t)); }
+function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── Ticker ── */
+const towns = ['Schwalbach','Kriftel','Hanau','Maintal','Gelnhausen','Hofheim am Taunus','Bad Soden am Taunus','Kelkheim','Bad Homburg','Oberursel','Eschborn','Flörsheim','Hattersheim','Rüsselsheim','Mörfelden','Dreieich','Neu-Isenburg'];
+const track = document.getElementById('tickerTrack');
+track.innerHTML = [...towns,...towns].map(t =>
+  `<span class="ticker-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${t}</span><span class="ticker-dot">●</span>`
+).join('');
+
+/* ── Panel ── */
+let currentMode = null;
+
+function openPanel(mode) {
+  // If same card → toggle closed
+  if (currentMode === mode) { closePanel(); return; }
+
+  currentMode = mode;
+
+  // Update heading
+  document.getElementById('panelTitle').textContent =
+    mode === 'help' ? 'Find tasks to accept near you' : 'Find helpers in your area';
+
+  // Reset search + results
+  document.getElementById('cityInput').value = '';
+  const res = document.getElementById('cpResults');
+  res.classList.remove('visible');
+  document.getElementById('taskList').innerHTML = '';
+
+  // Visual active state on cards
+  document.getElementById('card-need').classList.remove('active-card');
+  document.getElementById('card-help').classList.remove('active-card');
+  document.getElementById('card-' + mode).classList.add('active-card');
+
+  // Show panel
+  const panel = document.getElementById('cityPanel');
+  panel.classList.add('open');
+
+  // Scroll smoothly so user sees the panel
+  setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 60);
+  setTimeout(() => document.getElementById('cityInput').focus(), 120);
+}
+
+function closePanel() {
+  document.getElementById('cityPanel').classList.remove('open');
+  document.getElementById('cpResults').classList.remove('visible');
+  document.getElementById('card-need').classList.remove('active-card');
+  document.getElementById('card-help').classList.remove('active-card');
+  currentMode = null;
+}
+
+/* ── City search ── */
+function doSearch() {
+  const raw  = document.getElementById('cityInput').value.trim();
+  const norm = raw.toLowerCase();
+  if (!raw) { document.getElementById('cityInput').focus(); return; }
+
+  const listEl = document.getElementById('taskList');
+  const resEl  = document.getElementById('cpResults');
+  const titleEl = document.getElementById('resTitle');
+
+  // Show results area
+  resEl.classList.add('visible');
+  listEl.innerHTML = '';
+
+  const stored = getTasks().filter(t =>
+    t.city && t.city.toLowerCase().includes(norm)
+  );
+
+  if (currentMode === 'need') {
+    // "I need help" — show post CTA, not tasks
+    titleEl.innerHTML = `Post a task in <em>${esc(raw)}</em>`;
+    listEl.innerHTML = `
+      <div class="res-empty">
+        <div class="res-empty-title">Ready to get help in ${esc(raw)}?</div>
+        <div class="res-empty-sub">Post your task and a verified neighbour will pick it up.</div>
+        <button onclick="openModal('postModal')" style="margin-top:14px;padding:10px 22px;background:#2d5a3d;color:#fff;border:none;border-radius:6px;font-family:'Inter',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;">Post a task →</button>
+      </div>`;
+  } else {
+    // "I want to help" — show tasks
+    titleEl.innerHTML = `Open tasks near <em>${esc(raw)}</em>`;
+
+    if (stored.length === 0) {
+      listEl.innerHTML = `
+        <div class="res-empty">
+          <div class="res-empty-title">No tasks yet in ${esc(raw)}</div>
+          <div class="res-empty-sub">No one has posted a task here yet.<br>Try a nearby city, or check back soon.</div>
+        </div>`;
+    } else {
+      stored.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'task-row';
+        div.innerHTML = `
+          <div class="task-row-top">
+            <span class="task-row-name">${esc(t.title)}</span>
+            <span class="task-row-price">€${parseFloat(t.price).toFixed(2)}</span>
+          </div>
+          <div class="task-row-bottom">
+            <span class="task-row-meta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              ${esc(t.city)} · ${esc(t.duration)}
+            </span>
+            <span class="status-pill s-open">Open</span>
+          </div>`;
+        div.onclick = () => openTaskDetail(t);
+        listEl.appendChild(div);
+      });
+    }
+  }
+}
+
+/* ── Task detail ── */
+function openTaskDetail(t) {
+  window._at = t;
+  resetModal('taskModal');
+  openModal('taskModal');
+}
+
+/* ── Post task ── */
+function submitTask() {
+  const city  = document.getElementById('pCity').value;
+  const title = document.getElementById('pTitle').value.trim();
+  const desc  = document.getElementById('pDesc').value.trim();
+  const cat   = document.getElementById('pCat').value;
+  const price = document.getElementById('pPrice').value;
+  const dur   = document.getElementById('pDur').value;
+  if (!city||!title||!desc||!price) { alert('Please fill in all required fields.'); return; }
+  if (parseFloat(price) <= 0) { alert('Please enter a valid price.'); return; }
+  const tasks = getTasks();
+  tasks.push({ id:Date.now(), city, title, desc, cat, price:parseFloat(price), duration:dur, postedAt:new Date().toISOString() });
+  saveTasks(tasks);
+  ['pCity','pTitle','pDesc','pPrice'].forEach(id => { document.getElementById(id).value=''; });
+  closeModal('postModal');
+  openModal('successModal');
+}
+
+/* ── Modal helpers ── */
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function resetModal(id) {
+  const steps = document.querySelectorAll(`#${id} .mstep`);
+  steps.forEach(s => s.classList.remove('active'));
+  if (steps.length) steps[0].classList.add('active');
+}
+
+function goStep(modalId, stepId) {
+  document.querySelectorAll(`#${modalId} .mstep`).forEach(s => s.classList.remove('active'));
+  document.getElementById(stepId).classList.add('active');
+  if (stepId === 't-detail' && window._at) {
+    const t = window._at;
+    const total = (parseFloat(t.price) * 1.10).toFixed(2);
+    document.getElementById('td-cat').textContent   = t.cat;
+    document.getElementById('td-title').textContent = t.title;
+    document.getElementById('td-price').textContent = `€${parseFloat(t.price).toFixed(2)}`;
+    document.getElementById('td-fee').textContent   = `Total incl. 10% service fee: €${total}`;
+    document.getElementById('td-city').textContent  = t.city;
+    document.getElementById('td-dur').textContent   = t.duration;
+    document.getElementById('td-desc').textContent  = t.desc;
+  }
+}
+
+/* Close on backdrop click */
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => {
+    if (e.target === o) { closeModal(o.id); resetModal(o.id); }
+  });
+});
+</script>
+</body>
+</html>
